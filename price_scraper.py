@@ -1,8 +1,34 @@
-from selenium import webdriver
-from selenium.webdriver.common.by import By
-from selenium.webdriver.common.keys import Keys
-import pandas as pd
-import time
-import datetime
+import pymongo
 
-browser = webdriver.Chrome(executable_path='/chromedriver')
+# access mongodb client
+client = pymongo.MongoClient("mongodb://localhost:27017/")
+
+# access flight database
+db = client["flights"]
+
+# access flights collection
+col = db["flights"]
+
+# will find the only document in the collection (wiped after every use, as user will only query one flight route at a time)
+flightParams = col.find_one()
+
+# deconstruct JSON from database
+departingAirport = flightParams['departingAirport']
+arrivingAirport = flightParams['arrivingAirport']
+arrivingDate = flightParams['arrivingDate']
+departingDate = flightParams['departingDate']
+
+# drops flights database
+# col.drop()
+
+kayak = f'https://www.kayak.com/flights/{departingAirport}-{arrivingAirport}/{departingDate}/{arrivingDate}?sort=bestflight_a&attempt=1&lastms=1644742094747'
+
+
+
+
+
+# tests
+# print(departingAirport)
+# print(arrivingAirport)
+# print(arrivalDate)
+# print(departingDate)
