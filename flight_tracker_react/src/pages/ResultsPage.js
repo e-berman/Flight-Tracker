@@ -1,20 +1,39 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from 'react-router-dom';
+import { Container, Row, Col, Button, Form, Navbar } from 'react-bootstrap';
 
-function ResultsPage() {
+function ResultsPage({ flight }) {
+
 
     return (
-        <>
-            <div className="header">
-                <h1>Results Page</h1>
-            </div>
-            <div>
-                <button>Send To Email</button>
-            </div>
-            <div>
-                <Link to='/'>Search Again</Link>
-            </div>            
-        </>
+        <div className="results">
+            <Navbar bg="dark" variant="dark">
+                <Container>
+                    <Navbar.Brand href="/results">
+                    Flight Results
+                    </Navbar.Brand>
+                </Container>
+            </Navbar>
+            <Container>
+            <Form className="mt-3">
+                <Row>
+                    <Form.Label>Results Go Here When Scraper is Done</Form.Label>
+                </Row>
+                <Row>
+                    <Col>
+                        <Button>Send To Email</Button>
+                    </Col>
+                </Row>
+                <Row className="mt-3">
+                    <Col>
+                        <Link to="/">
+                            <Button>Back To Homepage</Button>
+                        </Link>
+                    </Col>
+                </Row>
+            </Form>
+            </Container>
+        </div>           
     );
 }
 
