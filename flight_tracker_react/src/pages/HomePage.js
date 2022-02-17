@@ -43,7 +43,7 @@ function HomePage() {
                 <Container>
                     <Navbar.Brand href="/">
                         <MdFlight />
-                    Cheap Flights
+                    Fire-Sale Flights
                     </Navbar.Brand>
                 </Container>
             </Navbar>
