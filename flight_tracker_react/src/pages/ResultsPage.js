@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Link } from 'react-router-dom';
 import { Container, Row, Col, Button, Form, Navbar } from 'react-bootstrap';
 
-function ResultsPage({ flight }) {
+function ResultsPage() {
 
 
     return (
