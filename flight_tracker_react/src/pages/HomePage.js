@@ -3,7 +3,7 @@ import { AiOutlineQuestionCircle } from "react-icons/ai";
 import { MdFlight } from "react-icons/md";
 import { useNavigate } from 'react-router-dom';
 // import 'boostrap/dist/css/boostrap.min.css';
-import { Container, Row, Col, Button, Form, Navbar } from 'react-bootstrap';
+import { Container, Row, Col, Button, Form, Navbar, Popover, OverlayTrigger } from 'react-bootstrap';
 
 function HomePage() {
 
@@ -50,9 +50,7 @@ function HomePage() {
             <Container>
             <Form className="mt-5">
                 <Row>
-                    <Col>
-                        <Button size="xs" variant="outline-dark">Need Help?</Button>
-                    </Col>
+                    
                 </Row>
                 <Row className="mt-3">
                     <Col>
@@ -113,7 +111,23 @@ function HomePage() {
                 </Row>
                 <Row className="mt-4">
                     <Col>
-                        <Button size="xs" onClick={createFlight}>Generate</Button>
+                        <Button onClick={createFlight}>Generate</Button>
+                        <OverlayTrigger
+                        trigger="click"
+                        placement="bottom"
+                        overlay={
+                            <Popover id="popover-basic">
+                                <Popover.Header as="h3">How To Use Fire-Sale Flights</Popover.Header>
+                                <Popover.Body>
+                                To find cheap flights for your desired destination, enter in you trip type, departing location,
+                                and arriving location. You will also need to include the date range for your trip.
+                                Once you have all the info entered, click the <strong>Generate</strong> button to get your results.
+                                </Popover.Body>
+                            </Popover>
+                        }
+                        >
+                            <Button className="ms-3" variant="outline-dark">Need Help?</Button>
+                        </OverlayTrigger>
                     </Col>
                 </Row>
             </Form>
