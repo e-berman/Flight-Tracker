@@ -119,9 +119,11 @@ function HomePage() {
                             <Popover id="popover-basic">
                                 <Popover.Header as="h3">How To Use Fire-Sale Flights</Popover.Header>
                                 <Popover.Body>
-                                To find cheap flights for your desired destination, enter in you trip type, departing location,
-                                and arriving location. You will also need to include the date range for your trip.
-                                Once you have all the info entered, click the <strong>Generate</strong> button to get your results.
+                                Enter in the flight type, departing airport, and arriving airport.
+                                You will also need to include the date range for your trip.
+                                <br />
+                                <br />
+                                Once you have all the info entered, click <strong>Generate</strong> to get your results.
                                 </Popover.Body>
                             </Popover>
                         }
