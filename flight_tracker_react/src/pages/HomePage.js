@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { AiOutlineQuestionCircle } from "react-icons/ai";
 import { MdFlight } from "react-icons/md";
 import { useNavigate } from 'react-router-dom';
-// import 'boostrap/dist/css/boostrap.min.css';
 import { Container, Row, Col, Button, Form, Navbar, Popover, OverlayTrigger } from 'react-bootstrap';
 
 function HomePage() {
