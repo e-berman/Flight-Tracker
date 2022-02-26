@@ -1,7 +1,7 @@
 import json
 import requests
 
-API_KEY = '39387a60d7367999d0e6a8be81da68bb'
+API_KEY = 'ENTER API KEY HERE'
 
 def get_movie_id(movie_title):
     '''gets the id of a single movie'''
@@ -151,7 +151,8 @@ def get_top_20_trending():
 
 def get_top_20_by_genre(genre, streaming_service):
     '''gets the top 20 most popular movies by genre'''
-    popular_by_genre = {'popular_by_genre': []}
+    movie_provider_ids = {}
+    total_list = {'results': []}
 
     # get movie genre id for passed movie genre
     response = requests.get('https://api.themoviedb.org/3/genre/movie/list?api_key=' + API_KEY + '&language=en-US')
@@ -169,28 +170,43 @@ def get_top_20_by_genre(genre, streaming_service):
     movie_provider_list = movie_provider_response['results']
 
     # iterate through list of movie providers and get provider_id for each of the 4 streaming providers
-    for movie_provider in movie_provider_list:
-        if movie_provider['provider_name'] == streaming_service:
-            # for some reason, TMDB has two options for Amazon Prime Video. The provider_id of 9 is the correct one.
-            if streaming_service == 'Amazon Prime Video' and movie_provider['provider_id'] == 9:
-                movie_provider_id = movie_provider['provider_id']
-            elif streaming_service == 'Netflix' or streaming_service == 'Hulu' or streaming_service == 'Disney Plus':
-                movie_provider_id = movie_provider['provider_id']
+    if len(streaming_service) > 1:
+        for service in streaming_service:
+            for movie_provider in movie_provider_list:
+                if movie_provider['provider_name'] == service:
+                    # for some reason, TMDB has two options for Amazon Prime Video. The provider_id of 9 is the correct one.
+                    if service == 'Amazon Prime Video' and movie_provider['provider_id'] == 9:
+                        movie_provider_ids.update({movie_provider['provider_name']: movie_provider['provider_id']})
+                    elif service == 'Netflix' or service == 'Hulu' or service == 'Disney Plus':
+                        movie_provider_ids.update({movie_provider['provider_name']: movie_provider['provider_id']})
+    elif len(streaming_service) == 1:
+        for movie_provider in movie_provider_list:
+            if movie_provider['provider_name'] == streaming_service:
+                # for some reason, TMDB has two options for Amazon Prime Video. The provider_id of 9 is the correct one.
+                if streaming_service == 'Amazon Prime Video' and movie_provider['provider_id'] == 9:
+                    movie_provider_ids.update({movie_provider['provider_name']: movie_provider['provider_id']})
+                elif streaming_service == 'Netflix' or streaming_service == 'Hulu' or streaming_service == 'Disney Plus':
+                    movie_provider_ids.update({movie_provider['provider_name']: movie_provider['provider_id']})
+    else:
+        return []
 
     # get 20 most popular movies in a specified genre
-    response = requests.get('https://api.themoviedb.org/3/discover/movie?api_key=' + API_KEY + f'&language=en-US&region=US&include_adult=false&include_video=false&page=1&with_genres={movie_genre_id}&with_original_language=en&watch_region=US&with_watch_monetization_types=flatrate&sort_by=vote_count.desc&with_watch_providers={movie_provider_id}')
-    final_response = response.json()
-    result_list = final_response['results']
-
-    for movie in result_list:
-        popular_by_genre['popular_by_genre'].append(movie['title'])
+    for key, value in movie_provider_ids.items():
+        response = requests.get('https://api.themoviedb.org/3/discover/movie?api_key=' + API_KEY + f'&language=en-US&region=US&include_adult=false&include_video=false&page=1&with_genres={movie_genre_id}&with_original_language=en&watch_region=US&with_watch_monetization_types=flatrate&sort_by=vote_count.desc&with_watch_providers={value}')
+        final_response = response.json()
+        result_list = final_response['results']
         
-    return json.dumps(popular_by_genre)
+        genre_by_provider = {key: []}
+        for movie in result_list:
+            genre_by_provider[key].append(movie['title'])
+        total_list['results'].append(genre_by_provider)
+        
+    return json.dumps(total_list)
 
 # tests
 # ----------------------------------------- #
-# print(get_movie_id('Moana'))
+# print(get_movie_id('Inception'))
 # print(get_movie_details(632727))
 # print(get_top_20_popular())
 # print(get_top_20_trending())
-# print(get_top_20_by_genre('Thriller', 'Hulu'))
+# print(get_top_20_by_genre('Adventure', ['Hulu', 'Netflix', 'Amazon Prime Video']))
