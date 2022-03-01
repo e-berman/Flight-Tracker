@@ -21,8 +21,15 @@ const flightSchema = mongoose.Schema({
     arrivingDate: { type: String, required: true}
 });
 
+const emailSchema = mongoose.Schema({
+    emailAddress: { type: String, required: true },
+});
+
 // Compile the model from the schema
 const Flight = mongoose.model('Flight', flightSchema);
+
+// Compile the model from email schema
+const Email = mongoose.model('Email', emailSchema);
 
 /**
  * Creates an Flight object
@@ -42,6 +49,11 @@ const Flight = mongoose.model('Flight', flightSchema);
     return flight.save();
 }
 
+const createEmail = async (emailAddress) => {
+    const email = new Email({ emailAddress: emailAddress })
+    return email.save()
+}
+
 // /**
 //  * Reads Flight object(s)
 //  * 
@@ -57,4 +69,4 @@ const Flight = mongoose.model('Flight', flightSchema);
 //     return query.exec();
 // }
 
-export { createFlight };
+export { createFlight, createEmail };

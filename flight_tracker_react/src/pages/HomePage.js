@@ -16,7 +16,7 @@ function HomePage() {
 
     // creates an flight and adds to database
     const createFlight = async () => {
-        const newFlight = { departingAirport, arrivingAirport, departingDate, arrivingDate};
+        const newFlight = {departingAirport, arrivingAirport, departingDate, arrivingDate};
         const response = await fetch('/', {
             method: 'POST', 
             body: JSON.stringify(newFlight),
@@ -26,9 +26,7 @@ function HomePage() {
         });
 
         // error handling with response status check
-        if (response.status === 201) {
-            alert('Successfully added the flight');
-        } else {
+        if (response.status !== 201) {
             alert(`Failed to add the flight. Status code = ${response.status}`);
         }
         navigate('/results');
@@ -48,9 +46,6 @@ function HomePage() {
             </Navbar>
             <Container>
             <Form className="mt-5">
-                <Row>
-                    
-                </Row>
                 <Row className="mt-3">
                     <Col>
                     <Form.Group controlId="flightType">
