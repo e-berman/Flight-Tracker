@@ -1,5 +1,7 @@
 # React Front End
 
+Runs on port 8000. 
+
 ## Dependencies Needed
 
 ### react-icons

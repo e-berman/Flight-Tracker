@@ -1,4 +1,6 @@
-# Node.js backend with MongoDB database
+# Node.js with Express routing and MongoDB database
+
+Backend runs on port 3000.
 
 ## Dependencies Needed
 
