@@ -1,7 +1,8 @@
 import json
 import requests
+import sys
 
-API_KEY = 'ENTER API KEY HERE'
+API_KEY = '9011241cc5ea3e79785529e6d6063376'
 
 def get_movie_id(movie_title):
     '''gets the id of a single movie'''
@@ -127,9 +128,11 @@ def get_top_20_popular():
 
     # given that 1 page contains 20 movies, iterate through each movie on first page and append to popular_movies dictionary
     for movie in results:
-        popular_movies['popular_movies'].append(movie['title'])
-        
-    return json.dumps(popular_movies)
+        popular_movies['popular_movies'].append(movie)
+
+    # returning full json from tmdb jluong
+    print(json.dumps(popular_movies))
+
 
 def get_top_20_trending():
     '''gets the top 20 trending movies from TMDB'''
@@ -145,9 +148,9 @@ def get_top_20_trending():
 
     # given that 1 page contains 20 movies, iterate through each movie on first page and append to trending_movies dictionary
     for movie in results:
-        trending_movies['trending_movies'].append(movie['title'])
-        
-    return json.dumps(trending_movies)
+        trending_movies['trending_movies'].append(movie)
+    
+    print(json.dumps(trending_movies))
 
 def get_top_20_by_genre(genre, streaming_service):
     '''gets the top 20 most popular movies by genre'''
@@ -198,10 +201,10 @@ def get_top_20_by_genre(genre, streaming_service):
         
         genre_by_provider = {key: []}
         for movie in result_list:
-            genre_by_provider[key].append(movie['title'])
+            genre_by_provider[key].append(movie)
         total_list['results'].append(genre_by_provider)
         
-    return json.dumps(total_list)
+    print(json.dumps(total_list))
 
 # tests
 # ----------------------------------------- #
@@ -210,3 +213,11 @@ def get_top_20_by_genre(genre, streaming_service):
 # print(get_top_20_popular())
 # print(get_top_20_trending())
 # print(get_top_20_by_genre('Adventure', ['Hulu', 'Netflix', 'Amazon Prime Video']))
+
+if __name__ == "__main__":
+    if sys.argv[1] == "getpopular":
+        get_top_20_popular()
+    if sys.argv[1] == "gettrending":
+        get_top_20_trending()
+    if sys.argv[1] == "getgenre":
+        get_top_20_by_genre(sys.argv[2],sys.argv[3:])
