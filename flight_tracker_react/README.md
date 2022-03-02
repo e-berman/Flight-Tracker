@@ -13,3 +13,8 @@ npm i react-router-dom --save
 ### nodemon
 
 npm i nodemon --save
+
+### react bootstrap
+
+npm i react-bootstrap --save
+
