@@ -8,8 +8,6 @@ function ResultsPage() {
 
 
     const [emailAddress, setEmailAddress] = useState('');
-    
-    // const navigate = useNavigate();
 
     // adds email address to database
     const createEmail = async () => {
@@ -28,21 +26,22 @@ function ResultsPage() {
         }
     }
 
-    // const launcher = async () => {
-    //     const response = await fetch('/email', {
-    //         method: 'POST', 
-    //         headers: {
-    //             'Content-Type': 'application/json',
-    //         },
-    //     });
+    // launcher that will call GET request that executes email microservice
+    const launcher = async () => {
+        const response = await fetch('/results', {
+            method: 'GET', 
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
 
-    //     if (response.status === 201) {
-    //         alert('Flight results have been emailed to you');
-    //     } else {
-    //         alert(`Failed to add the flight. Status code = ${response.status}`);
-    //     }
+        if (response.status === 201) {
+            alert('Flight results have been emailed to you');
+        } else {
+            alert(`Failed to add the flight. Status code = ${response.status}`);
+        }
 
-    // }
+    }
 
 
     return (
@@ -71,7 +70,7 @@ function ResultsPage() {
                     </Form.Group>
                     </Col>
                     <Col>
-                        <Button onClick={createEmail}
+                        <Button onClick={() => {createEmail(); launcher();}}
                         >Send To Email</Button>
                     </Col>
                 </Row>

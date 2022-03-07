@@ -21,7 +21,7 @@ departingDate = flightParams['departingDate']
 # drops flights database
 # col.drop()
 
-kayak = f'https://www.kayak.com/flights/{departingAirport}-{arrivingAirport}/{departingDate}/{arrivingDate}?sort=bestflight_a&attempt=1&lastms=1644742094747'
+kayak = f'https://www.kayak.com/flights/{departingAirport}-{arrivingAirport}/{departingDate}/{arrivingDate}?sort=price_a'
 
 
 

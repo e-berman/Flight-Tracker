@@ -10,6 +10,7 @@
 #              provider.
 
 import base64
+import sys
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from email.mime.image import MIMEImage
@@ -22,6 +23,7 @@ from googleapiclient.discovery import build
 from google_auth_oauthlib.flow import InstalledAppFlow
 from google.auth.transport.requests import Request
 import platform
+from datetime import datetime
 
 
 def popup(msg):
@@ -51,8 +53,15 @@ def connect_to_gmail(s):
     pickle_file = "token_" + email[0] + ".pickle"
 
     if os.path.exists(pickle_file):
-        with open(pickle_file, 'rb') as token:
-            creds = pickle.load(token)
+        if os.stat(pickle_file).st_mtime < time.time() - 3 * 86400:
+            # if the pickle file is more than 3 days old, it is deleted and the user needs to re-authenticate
+            os.remove(pickle_file)
+            creds = None
+        else:
+            # else, the file is opened and the token is read
+            with open(pickle_file, 'rb') as token:
+                creds = pickle.load(token)
+
         # If there are no (valid) credentials available, let the user log in.
     if not creds or not creds.valid:
         if creds and creds.expired and creds.refresh_token:
@@ -109,7 +118,13 @@ def generate_email(input_file, dir_path, slash):
     try:
         server.users().messages().send(userId="me", body=msg_raw).execute()
         popup('Email sent successfully!')
-        f = open(dir_path + slash + "success.txt", 'w')
+
+        # write the data from the email_data.txt file to a new text file to keep as a record of what was send
+        now = datetime.now()
+        email_sent_path = dir_path + slash + "email_data_" + now.strftime("%m.%d.%Y_%H%M") + ".txt"
+        with open(email_sent_path, 'w') as f:
+            for line in lines:
+                f.write(line)
         f.close()
 
     except server.SMTPAuthenticationError:
@@ -136,7 +151,7 @@ def get_system():
     if platform.system() == "Darwin":  # for Mac
         local_dir = os.environ['HOME'] + '/Desktop/email_service_data'
         slash = '/'
-    elif platform.system() == "Windows":
+    elif platform.system() == "Windows": # for windows
         local_dir = os.environ['USERPROFILE'] + '\\Desktop\\email_service_data'
         slash = '\\'
 
@@ -153,20 +168,29 @@ def email_service():
 
     file_path = dir_path + slash + "email_data.txt"
 
+    sleepTime = 3
+
     while True:
-        # wait for the file to exist
-        while not os.path.exists(file_path):
-            time.sleep(1)
+
+        # get the current time
+        timeNow = time.time()
 
         # if it is the file we are looking for, process it. Otherwise, print an error and exit
-        if os.path.isfile(file_path):
-            generate_email(file_path, dir_path, slash)
+        if os.path.exists(file_path) and os.path.isfile(file_path):
+            # get the time since epoch for the last time the file was modified
+            lastTimeSent = os.path.getmtime(file_path)
+            if lastTimeSent > timeNow - sleepTime:
+                # if the file is less than 3 seconds old, the email will be sent
+                generate_email(file_path, dir_path, slash)
 
         else:
             popup("email_data.txt was an invalid file.")
 
-        os.remove(file_path)
+        time.sleep(sleepTime)
 
 
 if __name__ == "__main__":
-    email_service()
+    try:
+        email_service()
+    except KeyboardInterrupt:
+        sys.exit(0)

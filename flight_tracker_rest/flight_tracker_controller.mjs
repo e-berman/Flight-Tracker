@@ -12,14 +12,24 @@ app.use(express.json());
 
 // ROUTES GO HERE
 
-// app.post('/email', (req, res) => {
-//     const pyPath = '/Users/eberman/ankylosaurus/school/CS_361/Flight-Tracker/launcher.py'
-//     const process = spawn('python', [pyPath])
+// route to run python microservice launcher
+app.get('/results', (req, res) => {
+    const pyPath = '/Users/eberman/ankylosaurus/school/CS_361/Flight-Tracker/launcher.py'
+    const process = spawn('python', [pyPath])
 
-//     process.stdout.on('data', (data) => {
-//         console.log(data)
-//     })
-// });
+    process.stdout.on('data', (stdout) => {
+        console.log(stdout.toString());
+    });
+
+    process.stderr.on('data', (stderr) => {
+        console.log(stderr.toString());
+    });
+      
+    process.on('close', (code) => {
+        // process.kill()
+        console.log('child process exited with code: ' + code);
+    });
+});
 
 
 app.post('/', (req, res) => {
