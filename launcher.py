@@ -29,7 +29,7 @@ def launcher():
 
     os.chdir('/Users/eberman/ankylosaurus/school/CS_361/Flight-Tracker/CS361_Email_Service/')
     os.system('python Email_Service.py')
-    col.delete_many({})
+    col.drop()
 
 
 launcher()
