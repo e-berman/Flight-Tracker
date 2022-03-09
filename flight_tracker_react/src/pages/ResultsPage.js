@@ -4,15 +4,23 @@ import { Container, Row, Col, Button, Form, Navbar } from 'react-bootstrap';
 
 
 
-function ResultsPage() {
+function ResultsPage({ flightResults }) {
 
 
     const [emailAddress, setEmailAddress] = useState('');
 
+    const getFlight = async () => {
+        const response = await fetch('/results', {
+            method: 'GET',
+            
+        })
+    }
+
+
     // adds email address to database
     const createEmail = async () => {
         const newEmailAddress = {emailAddress};
-        const response = await fetch('/results', {
+        const response = await fetch('/email', {
             method: 'POST', 
             body: JSON.stringify(newEmailAddress),
             headers: {
@@ -28,7 +36,7 @@ function ResultsPage() {
 
     // launcher that will call GET request that executes email microservice
     const launcher = async () => {
-        const response = await fetch('/results', {
+        const response = await fetch('/email', {
             method: 'GET', 
             headers: {
                 'Content-Type': 'application/json',

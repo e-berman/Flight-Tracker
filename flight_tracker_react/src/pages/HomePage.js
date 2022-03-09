@@ -17,7 +17,7 @@ function HomePage() {
     // creates an flight and adds to database
     const createFlight = async () => {
         const newFlight = {departingAirport, arrivingAirport, departingDate, arrivingDate};
-        const response = await fetch('/', {
+        const response = await fetch('/flights', {
             method: 'POST', 
             body: JSON.stringify(newFlight),
             headers: {
