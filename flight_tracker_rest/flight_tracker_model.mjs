@@ -62,11 +62,11 @@ const createEmail = async (emailAddress) => {
 //  * @returns all JSON objects in the collection
 //  */
 
-//  const readFlight = async (filter, projection, limit) => {
-//     const query = Flight.find(filter)
-//         .select(projection)
-//         .limit(limit);
-//     return query.exec();
-// }
+ const readFlights = async (filter, projection, limit) => {
+    const query = Flight.find(filter)
+        .select(projection)
+        .limit(limit);
+    return query.exec();
+}
 
-export { createFlight, createEmail };
+export { createFlight, createEmail, readFlights };
