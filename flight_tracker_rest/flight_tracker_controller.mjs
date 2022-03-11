@@ -12,8 +12,8 @@ app.use(express.json());
 
 // connect to Amadeus API with API key + secret
 const amadeus = new Amadeus({
-    clientId: 'PNYNUkMOFOERAFCuwADwtiCX3L4Pptje',
-    clientSecret: 'dqAGPxcpw1DRjNiW',
+    clientId: 'ENTER_CLIENT_ID',
+    clientSecret: 'ENTER_CLIENT_SECRET',
 });
 
 
