@@ -18,7 +18,7 @@ const flightSchema = mongoose.Schema({
     departingAirport: { type: String, required: true },
     arrivingAirport: { type: String, required: true},
     departingDate: { type: String, required: true},
-    arrivingDate: { type: String, required: true}
+    arrivingDate: { type: String, required: false}
 });
 
 const emailSchema = mongoose.Schema({
@@ -54,19 +54,17 @@ const createEmail = async (emailAddress) => {
     return email.save()
 }
 
-// /**
-//  * Reads Flight object(s)
-//  * 
-//  * No params
-//  * 
-//  * @returns all JSON objects in the collection
-//  */
+/**
+ * Reads Flight object(s)
+ * 
+ * No params
+ * 
+ @returns all JSON objects in the collection
+ */
 
- const readFlights = async (filter, projection, limit) => {
-    const query = Flight.find(filter)
-        .select(projection)
-        .limit(limit);
-    return query.exec();
-}
+// const readFlights = async (filter) => {
+//     const query = Flight.find(filter).sort({_id:-1}).limit(1)
+//     return query.exec();
+// }
 
-export { createFlight, createEmail, readFlights };
+export { createFlight, createEmail };
