@@ -12,10 +12,9 @@ app.use(express.json());
 
 // connect to Amadeus API with API key + secret
 const amadeus = new Amadeus({
-    clientId: 'PNYNUkMOFOERAFCuwADwtiCX3L4Pptje',
-    clientSecret: 'dqAGPxcpw1DRjNiW',
+    clientId: 'Vjg94YU3SLvInMPwKdsG9xACSpjmWW9b',
+    clientSecret: 'snT7b9SsPdUjrUXG',
 });
-
 
 // ROUTES GO HERE
 
@@ -41,36 +40,33 @@ app.get('/email', (req, res) => {
     });
 });
 
-app.get("/results", (req, res) => {
-    let filter = {}
+// passes form data to route via request body parameters.
+// Then calls amadeus Flight Offers Search API to retrieve
+// flight data pertaining to request body parameters.
+app.post('/flight', (req, res) => {
 
-    flight.readFlights(filter, '', 0)
-        // If Promise is fulfilled, 200 status provided and all objects in collection are displayed in JSON format
-        .then(flight_obj => {
-            res.setHeader('Content-Type', 'application/json');
-            res.status(200).json(flight_obj);
-        })
-        // In case of failed Promise, raise 400 status code
-        .catch(error => {
-            console.log(error)
-            res.status(400).json(error);
+    if (req.body.arrivingDate === '') {
+        req.body.arrivingDate = req.body.departingDate
+    }
 
-        });
-});
+    amadeus.shopping.flightOffersSearch.get({
+        originLocationCode: req.body.departingAirport,
+        destinationLocationCode: req.body.arrivingAirport,
+        departureDate: req.body.departingDate,
+        returnDate: req.body.arrivingDate,
+        adults: '1',
+        travelClass: 'ECONOMY',
+        nonStop: true,
+        currencyCode: 'USD',
+        max: 30,
+    }).then(flight_obj => {
+        res.status(200).json(flight_obj)
+        console.log(flight_obj);
+    }).catch(error => {
+        console.error(error)
+        console.log(error);
+    });
 
-// adds flight information to database
-app.post('/', (req, res) => {
-    flight.createFlight(req.body.departingAirport, req.body.arrivingAirport, req.body.departingDate, req.body.arrivingDate)
-        // If no error, 201 status provided and object sent as response in JSON format
-        .then(flight_obj => {
-            res.setHeader('Content-Type', 'application/json');
-            res.status(201).json(flight_obj);
-        })
-        // In case of failed Promise, raise 404 status code
-        .catch(error => {
-            console.error(error);
-            res.status(400).json({ error: "Request Failed" });
-        });
 });
 
 // adds user email address to database for python microservice
