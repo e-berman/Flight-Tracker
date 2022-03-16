@@ -10,29 +10,34 @@ function HomePage() {
     const [arrivingAirport, setArrivingAirport] = useState('');
     const [departingDate, setDepartingDate] = useState('');
     const [arrivingDate, setArrivingDate] = useState('');
-
+    let flights = []
     // with React v6, navigate replaces useHistory
     const navigate = useNavigate();
 
     // creates an flight and adds to database
     const createFlight = async () => {
         const newFlight = {departingAirport, arrivingAirport, departingDate, arrivingDate};
-        const response = await fetch('/flights', {
+        const response = await fetch('/flight', {
             method: 'POST', 
             body: JSON.stringify(newFlight),
             headers: {
                 'Content-Type': 'application/json',
             },
+        })
+        .then(response => response.json())
+        .then(payload_data => { 
+            console.log(payload_data.data)
+            flights = payload_data.data
         });
 
-        // error handling with response status check
-        if (response.status !== 201) {
-            alert(`Failed to add the flight. Status code = ${response.status}`);
-        }
-        navigate('/results');
+        navigate('/results', {
+            state: {
+                flights: flights
+            }
+        });
     }
 
-
+    
     return (
 
         <div className="homepage">
