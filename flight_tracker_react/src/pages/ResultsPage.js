@@ -1,21 +1,16 @@
-import React, { useState } from "react";
-import { Link } from 'react-router-dom';
-import { Container, Row, Col, Button, Form, Navbar } from 'react-bootstrap';
+import React, { useEffect, useState } from "react";
+import { Link, useLocation } from 'react-router-dom';
+import { Table, Container, Row, Col, Button, Form, Navbar } from 'react-bootstrap';
 
 
+function ResultsPage() {
 
-function ResultsPage({ flightResults }) {
-
+    // retrieve payload from HomePage via useNavigate
+    const location = useLocation();
 
     const [emailAddress, setEmailAddress] = useState('');
-
-    const getFlight = async () => {
-        const response = await fetch('/results', {
-            method: 'GET',
-            
-        })
-    }
-
+    
+    let flightData = location.state.flights
 
     // adds email address to database
     const createEmail = async () => {
@@ -51,6 +46,16 @@ function ResultsPage({ flightResults }) {
 
     }
 
+    const loadFlight = async () => {
+        for (let i = 0; i < flightData.length; i++) {
+            let 
+        }
+
+    }
+
+    useEffect(() => {
+        loadFlight();
+    }, []);
 
     return (
         <div className="results">
@@ -63,8 +68,17 @@ function ResultsPage({ flightResults }) {
             </Navbar>
             <Container>
             <Form className="mt-3">
-                <Row>
-                    <Form.Label>Results Go Here When Scraper is Done</Form.Label>
+                <Row >
+                    Display Table Here
+                    <Table>
+                        <thead>
+                            <th>Departing Airport</th>
+                            <th>Arriving Airport</th>
+                            <th>Departing Date</th>
+                            <th>Arriving Date</th>
+                            <th>Price</th>
+                        </thead>
+                    </Table>
                 </Row>
                 <Row>
                     <Col>
