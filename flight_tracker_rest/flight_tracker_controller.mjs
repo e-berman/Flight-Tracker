@@ -56,15 +56,30 @@ app.post('/flight', (req, res) => {
         returnDate: req.body.arrivingDate,
         adults: '1',
         travelClass: 'ECONOMY',
+        includedAirlineCodes: 'WN,AA,AS,DL,NK,HA,UA,F9,B6,OO',
         nonStop: true,
         currencyCode: 'USD',
-        max: 30,
+        max: 20,
     }).then(flight_obj => {
         res.status(200).json(flight_obj)
         console.log(flight_obj);
     }).catch(error => {
         console.error(error)
         console.log(error);
+    });
+
+});
+
+app.post('/carrier', (req, res) => {
+
+    amadeus.referenceData.airlines.get({
+        airlineCodes: req.body.airCarrierCode,
+    }).then(obj => {
+        res.status(200).json(obj)
+        console.log(obj)
+    }).catch(error => {
+        console.error(error)
+        console.log(error)
     });
 
 });
