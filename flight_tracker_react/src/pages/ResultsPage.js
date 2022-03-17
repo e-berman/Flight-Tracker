@@ -9,8 +9,13 @@ function ResultsPage() {
     const location = useLocation();
 
     const [emailAddress, setEmailAddress] = useState('');
-    
-    let flightData = location.state.flights
+
+    let flightParams = location.state.flights['request']['params'];
+    let flightData = location.state.flights['data'];
+    let carrierCodes = [];
+    let prices = [];
+    let displayData = [];
+    let airCarrierCode = '';
 
     // adds email address to database
     const createEmail = async () => {
@@ -46,11 +51,65 @@ function ResultsPage() {
 
     }
 
+    const getAirCarrier = async(carrier_code) => {
+
+        let data = null
+
+        // fetch air carrier name via IATA code through Amadeus API
+        await fetch('/carrier', {
+            method: 'POST', 
+            body: JSON.stringify(carrier_code),
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        })
+        .then(response => response.json())
+        .then(payload_data => {
+            // console.log(payload_data)
+            data = payload_data
+        })
+
+        return data;
+    }
+
     const loadFlight = async () => {
+        console.log(flightData)
+
+        let dict = {}
         for (let i = 0; i < flightData.length; i++) {
-            let 
+
+            // store IATA code for getAirCarrier function
+            airCarrierCode = flightData[i]['validatingAirlineCodes'][0]
+
+            // call getAirCarrier function, and retrieve air carrier name based on IATA code
+            let result = await getAirCarrier({airCarrierCode});
+
+            // append all relevant table data to dict
+            dict._id = flightData[i]['id']
+            dict.airCarrier = result['data'][0]['businessName']
+            dict.departAirport = flightParams['originLocationCode']
+            dict.arriveAirport = flightParams['destinationLocationCode']
+            dict.departDate = flightParams['departureDate']
+            dict.returnDate = flightParams['returnDate']
+            dict.price = flightData[i]['price']['total']
+            dict.seatsLeft = flightData[i]['numberOfBookableSeats']
+            
+            // if price is unique, add dictionary to dict
+            if (prices.includes(flightData[i]['price']['total']) !== true) {
+                displayData.push(dict)
+            }
+            // if carrier code is unique, append to carrierCodes array
+            if (carrierCodes.includes(airCarrierCode) !== true) {
+                carrierCodes.push(airCarrierCode);
+            }
+            // if price is unique, append to prices array
+            if (prices.includes(flightData[i]['price']['total']) !== true) {
+                prices.push(flightData[i]['price']['total'])
+            }
+            dict = {}
         }
 
+        console.log(displayData)
     }
 
     useEffect(() => {
@@ -69,15 +128,32 @@ function ResultsPage() {
             <Container>
             <Form className="mt-3">
                 <Row >
-                    Display Table Here
                     <Table>
                         <thead>
-                            <th>Departing Airport</th>
-                            <th>Arriving Airport</th>
-                            <th>Departing Date</th>
-                            <th>Arriving Date</th>
-                            <th>Price</th>
+                            <tr>
+                                <th>ID</th>
+                                <th>Air Carrier</th>
+                                <th>Departing Airport</th>
+                                <th>Arriving Airport</th>
+                                <th>Departing Date</th>
+                                <th>Arriving Date</th>
+                                <th>Price</th>
+                                <th>Seats Left</th>
+                            </tr>
                         </thead>
+                        <tbody>
+                            {displayData.map((data) => (
+                                <tr key={data._id}>
+                                    <td>{data.airCarrier}</td>
+                                    <td>{data.departAirport}</td>
+                                    <td>{data.arriveAirport}</td>
+                                    <td>{data.departDate}</td>
+                                    <td>{data.returnDate}</td>
+                                    <td>{data.price}</td>
+                                    <td>{data.seatsLeft}</td>
+                                </tr>
+                            ))}
+                        </tbody>
                     </Table>
                 </Row>
                 <Row>
