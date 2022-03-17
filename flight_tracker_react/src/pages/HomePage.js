@@ -10,14 +10,15 @@ function HomePage() {
     const [arrivingAirport, setArrivingAirport] = useState('');
     const [departingDate, setDepartingDate] = useState('');
     const [arrivingDate, setArrivingDate] = useState('');
-    let flights = []
+    let flights = null
+    
     // with React v6, navigate replaces useHistory
     const navigate = useNavigate();
 
     // creates an flight and adds to database
     const createFlight = async () => {
         const newFlight = {departingAirport, arrivingAirport, departingDate, arrivingDate};
-        const response = await fetch('/flight', {
+        await fetch('/flight', {
             method: 'POST', 
             body: JSON.stringify(newFlight),
             headers: {
@@ -26,8 +27,8 @@ function HomePage() {
         })
         .then(response => response.json())
         .then(payload_data => { 
-            console.log(payload_data.data)
-            flights = payload_data.data
+            console.log(payload_data)
+            flights = payload_data
         });
 
         navigate('/results', {
