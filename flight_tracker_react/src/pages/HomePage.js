@@ -10,14 +10,16 @@ function HomePage() {
     const [arrivingAirport, setArrivingAirport] = useState('');
     const [departingDate, setDepartingDate] = useState('');
     const [arrivingDate, setArrivingDate] = useState('');
+    const [flightType, setFlightType] = useState("One Way");
+    const [hidden, setHidden] = useState(false);
     let flights = null
-    
+
     // with React v6, navigate replaces useHistory
     const navigate = useNavigate();
 
     // creates an flight and adds to database
     const createFlight = async () => {
-        const newFlight = {departingAirport, arrivingAirport, departingDate, arrivingDate};
+        const newFlight = {flightType, departingAirport, arrivingAirport, departingDate, arrivingDate};
         await fetch('/flight', {
             method: 'POST', 
             body: JSON.stringify(newFlight),
@@ -38,7 +40,17 @@ function HomePage() {
         });
     }
 
-    
+    const changeHandler = (event) => {
+        setFlightType(event.target.value)
+        if (flightType === 'One Way') {
+            setHidden(true);
+        } else {
+            setHidden(false);
+        }
+        
+    }
+
+
     return (
 
         <div className="homepage">
@@ -56,9 +68,9 @@ function HomePage() {
                     <Col>
                     <Form.Group controlId="flightType">
                         <Form.Label>Flight Type: </Form.Label>
-                        <Form.Select>
-                            <option>One Way</option>
-                            <option>Round Trip</option>
+                        <Form.Select onChange={e => changeHandler(e)}>
+                            <option value="One Way">One Way</option>
+                            <option value="Round Trip">Round Trip</option>
                         </Form.Select>
                     </Form.Group>
                     </Col>
@@ -98,7 +110,7 @@ function HomePage() {
                     </Form.Group>
                     </Col>
                     <Col>
-                    <Form.Group controlId="arrivingDate">
+                    <Form.Group className={hidden ? "d-block" : "d-none"} controlId="arrivingDate">
                         <Form.Label>Return Date: </Form.Label>
                         <Form.Control
                             type='date'
