@@ -46,27 +46,47 @@ app.get('/email', (req, res) => {
 app.post('/flight', (req, res) => {
 
     if (req.body.arrivingDate === '') {
-        req.body.arrivingDate = req.body.departingDate
-    }
 
-    amadeus.shopping.flightOffersSearch.get({
-        originLocationCode: req.body.departingAirport,
-        destinationLocationCode: req.body.arrivingAirport,
-        departureDate: req.body.departingDate,
-        returnDate: req.body.arrivingDate,
-        adults: '1',
-        travelClass: 'ECONOMY',
-        includedAirlineCodes: 'WN,AA,AS,DL,NK,HA,UA,F9,B6,OO',
-        nonStop: true,
-        currencyCode: 'USD',
-        max: 20,
-    }).then(flight_obj => {
-        res.status(200).json(flight_obj)
-        console.log(flight_obj);
-    }).catch(error => {
-        console.error(error)
-        console.log(error);
-    });
+        amadeus.shopping.flightOffersSearch.get({
+            originLocationCode: req.body.departingAirport,
+            destinationLocationCode: req.body.arrivingAirport,
+            departureDate: req.body.departingDate,
+            adults: '1',
+            travelClass: 'ECONOMY',
+            includedAirlineCodes: 'WN,AA,AS,DL,NK,HA,UA,F9,B6,OO',
+            nonStop: true,
+            currencyCode: 'USD',
+            max: 20,
+        }).then(flight_obj => {
+            res.status(200).json(flight_obj)
+            console.log(flight_obj);
+        }).catch(error => {
+            console.error(error)
+            console.log(error);
+        });
+        
+    } else {
+
+        amadeus.shopping.flightOffersSearch.get({
+            originLocationCode: req.body.departingAirport,
+            destinationLocationCode: req.body.arrivingAirport,
+            departureDate: req.body.departingDate,
+            returnDate: req.body.arrivingDate,
+            adults: '1',
+            travelClass: 'ECONOMY',
+            includedAirlineCodes: 'WN,AA,AS,DL,NK,HA,UA,F9,B6,OO',
+            nonStop: true,
+            currencyCode: 'USD',
+            max: 20,
+        }).then(flight_obj => {
+            res.status(200).json(flight_obj)
+            console.log(flight_obj);
+        }).catch(error => {
+            console.error(error)
+            console.log(error);
+        });
+    
+    }
 
 });
 
@@ -91,6 +111,21 @@ app.post('/email', (req, res) => {
         .then(email_obj => {
             res.setHeader('Content-Type', 'application/json');
             res.status(201).json(email_obj);
+        })
+        // In case of failed Promise, raise 404 status code
+        .catch(error => {
+            console.error(error);
+            res.status(400).json({ error: "Request Failed" });
+        });
+});
+
+app.post('/results', (req, res) => {
+    console.log(req.body.passData)
+    flight.createFlightResults(req.body.passData)
+        // If no error, 201 status provided and object sent as response in JSON format
+        .then(results_obj => {
+            res.setHeader('Content-Type', 'application/json');
+            res.status(201).json(results_obj);
         })
         // In case of failed Promise, raise 404 status code
         .catch(error => {
