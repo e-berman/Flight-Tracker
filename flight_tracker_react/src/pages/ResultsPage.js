@@ -9,12 +9,14 @@ function ResultsPage() {
     const location = useLocation();
 
     const [emailAddress, setEmailAddress] = useState('');
+    const [displayData, setDisplayData] = useState([]);
+    const [passData, setPassData] = useState(null);
 
     let flightParams = location.state.flights['request']['params'];
     let flightData = location.state.flights['data'];
     let carrierCodes = [];
     let prices = [];
-    let displayData = [];
+    let totalData = [];
     let airCarrierCode = '';
 
     // adds email address to database
@@ -23,6 +25,23 @@ function ResultsPage() {
         const response = await fetch('/email', {
             method: 'POST', 
             body: JSON.stringify(newEmailAddress),
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+
+        // error handling with response status check
+        if (response.status !== 201) {
+            alert(`Failed to add the email. Status code = ${response.status}`);
+        }
+    }
+
+    const createFlightResults = async() => {
+
+        const newFlightResults = {passData};
+        const response = await fetch('/results', {
+            method: 'POST', 
+            body: JSON.stringify(newFlightResults),
             headers: {
                 'Content-Type': 'application/json',
             },
@@ -75,8 +94,9 @@ function ResultsPage() {
     const loadFlight = async () => {
         console.log(flightData)
 
-        let dict = {}
+        
         for (let i = 0; i < flightData.length; i++) {
+            let dict = {}
 
             // store IATA code for getAirCarrier function
             airCarrierCode = flightData[i]['validatingAirlineCodes'][0]
@@ -96,7 +116,8 @@ function ResultsPage() {
             
             // if price is unique, add dictionary to dict
             if (prices.includes(flightData[i]['price']['total']) !== true) {
-                displayData.push(dict)
+                setDisplayData(currentData => [...currentData, dict]);
+                totalData.push(dict);
             }
             // if carrier code is unique, append to carrierCodes array
             if (carrierCodes.includes(airCarrierCode) !== true) {
@@ -106,15 +127,18 @@ function ResultsPage() {
             if (prices.includes(flightData[i]['price']['total']) !== true) {
                 prices.push(flightData[i]['price']['total'])
             }
-            dict = {}
         }
 
-        console.log(displayData)
+        setPassData(totalData);
+        
     }
 
     useEffect(() => {
         loadFlight();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
+
+
 
     return (
         <div className="results">
@@ -131,12 +155,11 @@ function ResultsPage() {
                     <Table>
                         <thead>
                             <tr>
-                                <th>ID</th>
                                 <th>Air Carrier</th>
                                 <th>Departing Airport</th>
                                 <th>Arriving Airport</th>
                                 <th>Departing Date</th>
-                                <th>Arriving Date</th>
+                                <th>Return Date</th>
                                 <th>Price</th>
                                 <th>Seats Left</th>
                             </tr>
@@ -168,7 +191,7 @@ function ResultsPage() {
                     </Form.Group>
                     </Col>
                     <Col>
-                        <Button onClick={() => {createEmail(); launcher();}}
+                        <Button onClick={() => {createEmail(); createFlightResults(); launcher();}}
                         >Send To Email</Button>
                     </Col>
                 </Row>
