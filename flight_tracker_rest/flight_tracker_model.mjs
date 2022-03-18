@@ -25,11 +25,18 @@ const emailSchema = mongoose.Schema({
     emailAddress: { type: String, required: true },
 });
 
+const flightResultsSchema = mongoose.Schema({
+    results: { type: Array, required: true },
+});
+
 // Compile the model from the schema
 const Flight = mongoose.model('Flight', flightSchema);
 
 // Compile the model from email schema
 const Email = mongoose.model('Email', emailSchema);
+
+// Compile the model from flightresults schema
+const FlightResults = mongoose.model('FlightResults', flightResultsSchema);
 
 /**
  * Creates an Flight object
@@ -49,22 +56,29 @@ const Email = mongoose.model('Email', emailSchema);
     return flight.save();
 }
 
+/**
+ * Creates an Email object
+ * 
+ * @param {String} emailAddress
+ * @returns Promise - resolved to JSON after .save
+ */
+
 const createEmail = async (emailAddress) => {
     const email = new Email({ emailAddress: emailAddress })
     return email.save()
 }
 
 /**
- * Reads Flight object(s)
+ * Creates an FlightResults object
  * 
- * No params
- * 
- @returns all JSON objects in the collection
+ * @param {Array} results
+ * @returns Promise - resolved to JSON after .save
  */
 
-// const readFlights = async (filter) => {
-//     const query = Flight.find(filter).sort({_id:-1}).limit(1)
-//     return query.exec();
-// }
+const createFlightResults = async (results) => {
+    const flightResults = new FlightResults({ results: results});
+    return flightResults.save();
+}
 
-export { createFlight, createEmail };
+
+export { createFlight, createEmail, createFlightResults };
