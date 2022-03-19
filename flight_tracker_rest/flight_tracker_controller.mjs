@@ -11,12 +11,12 @@ const app = express();
 app.use(express.json());
 
 // connect to Amadeus API with API key + secret
+// for details on Amadeus APIs: https://developers.amadeus.com/self-service.
 const amadeus = new Amadeus({
     clientId: 'Vjg94YU3SLvInMPwKdsG9xACSpjmWW9b',
     clientSecret: 'snT7b9SsPdUjrUXG',
 });
 
-// ROUTES GO HERE
 
 // route to run python microservice launcher
 app.get('/email', (req, res) => {
@@ -35,7 +35,9 @@ app.get('/email', (req, res) => {
 
     // close the child process and provide exit code
     process.on('close', (code) => {
-        // process.kill()
+        if (code === 0) {
+            res.sendStatus(200)
+        }
         console.log('child process exited with code: ' + code);
     });
 });
@@ -90,6 +92,7 @@ app.post('/flight', (req, res) => {
 
 });
 
+// route that will retrieve air carrier business name from IATA code
 app.post('/carrier', (req, res) => {
 
     amadeus.referenceData.airlines.get({
@@ -119,8 +122,9 @@ app.post('/email', (req, res) => {
         });
 });
 
+// adds the array of flights to the database
 app.post('/results', (req, res) => {
-    console.log(req.body.passData)
+    // console.log(req.body.passData)
     flight.createFlightResults(req.body.passData)
         // If no error, 201 status provided and object sent as response in JSON format
         .then(results_obj => {
@@ -135,7 +139,7 @@ app.post('/results', (req, res) => {
 });
 
 
-// listening
+// listening on designated port
 
 app.listen(PORT, () => {
     console.log(`Server listening on port ${PORT}...`);
