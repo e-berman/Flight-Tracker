@@ -1,11 +1,11 @@
 import React, { useState } from "react";
-// import { AiOutlineQuestionCircle } from "react-icons/ai";
 import { MdFlight } from "react-icons/md";
 import { useNavigate } from 'react-router-dom';
 import { Container, Row, Col, Button, Form, Navbar, Popover, OverlayTrigger } from 'react-bootstrap';
 
 function HomePage() {
 
+    // initialize state variables
     const [departingAirport, setDepartingAirport] = useState('');
     const [arrivingAirport, setArrivingAirport] = useState('');
     const [departingDate, setDepartingDate] = useState('');
@@ -17,7 +17,8 @@ function HomePage() {
     // with React v6, navigate replaces useHistory
     const navigate = useNavigate();
 
-    // creates an flight and adds to database
+    // passes newFlight parameters to flight route.
+    // then passes the resulting flights array to the results page.
     const createFlight = async () => {
         const newFlight = {flightType, departingAirport, arrivingAirport, departingDate, arrivingDate};
         await fetch('/flight', {
@@ -40,6 +41,7 @@ function HomePage() {
         });
     }
 
+    // handles the visibility of the Return Date text field based on if flight is One Way or Round Trip
     const changeHandler = (event) => {
         setFlightType(event.target.value)
         if (flightType === 'One Way') {
@@ -136,6 +138,10 @@ function HomePage() {
                                 <br />
                                 <br />
                                 Once you have all the info entered, click <strong>Generate</strong> to get your results.
+                                <br />
+                                <br />
+                                On the results page, you may also enter your email address to send the lowest price flight
+                                to your email address.
                                 </Popover.Body>
                             </Popover>
                         }

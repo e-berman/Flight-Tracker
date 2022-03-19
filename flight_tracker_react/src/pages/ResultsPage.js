@@ -8,6 +8,7 @@ function ResultsPage() {
     // retrieve payload from HomePage via useNavigate
     const location = useLocation();
 
+    // initialize state variables
     const [emailAddress, setEmailAddress] = useState('');
     const [displayData, setDisplayData] = useState([]);
     const [passData, setPassData] = useState(null);
@@ -36,6 +37,7 @@ function ResultsPage() {
         }
     }
 
+    // fetches results route to store flight data to database
     const createFlightResults = async() => {
 
         const newFlightResults = {passData};
@@ -62,14 +64,13 @@ function ResultsPage() {
             },
         });
 
-        if (response.status === 201) {
-            alert('Flight results have been emailed to you');
-        } else {
-            alert(`Failed to add the flight. Status code = ${response.status}`);
+        if (response.status !== 200) {
+            alert(`Failed to email the flight results. Status code = ${response.status}`);
         }
 
     }
 
+    // calls the carrier route to call Amadeus API to translate IATA code to air carrier business name
     const getAirCarrier = async(carrier_code) => {
 
         let data = null
@@ -91,9 +92,9 @@ function ResultsPage() {
         return data;
     }
 
+    // retrieves relevant data from payload and displays data on table on ResultsPage.
+    // then sets passData state variable to array of all flights.
     const loadFlight = async () => {
-        console.log(flightData)
-
         
         for (let i = 0; i < flightData.length; i++) {
             let dict = {}
@@ -133,6 +134,7 @@ function ResultsPage() {
         
     }
 
+    // renders page and updates page on each passData state variable update
     useEffect(() => {
         loadFlight();
         // eslint-disable-next-line react-hooks/exhaustive-deps
