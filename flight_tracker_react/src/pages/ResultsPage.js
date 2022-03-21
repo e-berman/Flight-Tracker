@@ -117,7 +117,6 @@ function ResultsPage() {
             
             // if price is unique, add dictionary to dict
             if (prices.includes(flightData[i]['price']['total']) !== true) {
-                setDisplayData(currentData => [...currentData, dict]);
                 totalData.push(dict);
             }
             // if carrier code is unique, append to carrierCodes array
@@ -130,7 +129,10 @@ function ResultsPage() {
             }
         }
 
+        // set the state variable to pass the data to the database.
+        // additionally sets the totalData array, and re-renders the page to populate the table.
         setPassData(totalData);
+        setDisplayData(totalData);
         
     }
 
