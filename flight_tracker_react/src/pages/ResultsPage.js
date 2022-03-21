@@ -133,10 +133,9 @@ function ResultsPage() {
         // additionally sets the totalData array, and re-renders the page to populate the table.
         setPassData(totalData);
         setDisplayData(totalData);
-        
     }
 
-    // renders page and updates page on each passData state variable update
+    // renders page and updates page on each displayData state variable update
     useEffect(() => {
         loadFlight();
         // eslint-disable-next-line react-hooks/exhaustive-deps
