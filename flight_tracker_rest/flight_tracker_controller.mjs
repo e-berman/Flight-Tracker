@@ -13,8 +13,8 @@ app.use(express.json());
 // connect to Amadeus API with API key + secret
 // for details on Amadeus APIs: https://developers.amadeus.com/self-service.
 const amadeus = new Amadeus({
-    clientId: 'Vjg94YU3SLvInMPwKdsG9xACSpjmWW9b',
-    clientSecret: 'snT7b9SsPdUjrUXG',
+    clientId: 'ENTER_CLIENT_ID',
+    clientSecret: 'ENTER_CLIENT_SECRET',
 });
 
 
