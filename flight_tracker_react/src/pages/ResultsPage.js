@@ -85,8 +85,8 @@ function ResultsPage() {
         })
         .then(response => response.json())
         .then(payload_data => {
-            // console.log(payload_data)
-            data = payload_data
+            console.log(payload_data);
+            data = payload_data;
         })
 
         return data;
@@ -100,20 +100,20 @@ function ResultsPage() {
             let dict = {}
 
             // store IATA code for getAirCarrier function
-            airCarrierCode = flightData[i]['validatingAirlineCodes'][0]
+            airCarrierCode = flightData[i]['validatingAirlineCodes'][0];
 
             // call getAirCarrier function, and retrieve air carrier name based on IATA code
             let result = await getAirCarrier({airCarrierCode});
 
             // append all relevant table data to dict
-            dict._id = flightData[i]['id']
-            dict.airCarrier = result['data'][0]['businessName']
-            dict.departAirport = flightParams['originLocationCode']
-            dict.arriveAirport = flightParams['destinationLocationCode']
-            dict.departDate = flightParams['departureDate']
-            dict.returnDate = flightParams['returnDate']
-            dict.price = flightData[i]['price']['total']
-            dict.seatsLeft = flightData[i]['numberOfBookableSeats']
+            dict._id = flightData[i]['id'];
+            dict.airCarrier = result['data'][0]['businessName'];
+            dict.departAirport = flightParams['originLocationCode'];
+            dict.arriveAirport = flightParams['destinationLocationCode'];
+            dict.departDate = flightParams['departureDate'];
+            dict.returnDate = flightParams['returnDate'];
+            dict.price = flightData[i]['price']['total'];
+            dict.seatsLeft = flightData[i]['numberOfBookableSeats'];
             
             // if price is unique, add dictionary to dict
             if (prices.includes(flightData[i]['price']['total']) !== true) {
@@ -125,7 +125,7 @@ function ResultsPage() {
             }
             // if price is unique, append to prices array
             if (prices.includes(flightData[i]['price']['total']) !== true) {
-                prices.push(flightData[i]['price']['total'])
+                prices.push(flightData[i]['price']['total']);
             }
         }
 
