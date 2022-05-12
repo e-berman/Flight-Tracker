@@ -13,7 +13,7 @@ db.once('open', () => {
     console.log('Successfully connected to MongoDB using Mongoose.');
 });
 
-//Define schema for the flight object
+// define schema for the flight object
 const flightSchema = mongoose.Schema({
     departingAirport: { type: String, required: true },
     arrivingAirport: { type: String, required: true},
@@ -21,10 +21,12 @@ const flightSchema = mongoose.Schema({
     arrivingDate: { type: String, required: false}
 });
 
+// define schema for email object
 const emailSchema = mongoose.Schema({
     emailAddress: { type: String, required: true },
 });
 
+// define schema for flight results object
 const flightResultsSchema = mongoose.Schema({
     results: { type: Array, required: true },
 });
