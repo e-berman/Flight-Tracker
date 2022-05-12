@@ -36,7 +36,7 @@ app.get('/email', (req, res) => {
     // close the child process and provide exit code
     process.on('close', (code) => {
         if (code === 0) {
-            res.sendStatus(200)
+            res.sendStatus(200);
         }
         console.log('child process exited with code: ' + code);
     });
@@ -98,11 +98,11 @@ app.post('/carrier', (req, res) => {
     amadeus.referenceData.airlines.get({
         airlineCodes: req.body.airCarrierCode,
     }).then(obj => {
-        res.status(200).json(obj)
-        console.log(obj)
+        res.status(200).json(obj);
+        console.log(obj);
     }).catch(error => {
-        console.error(error)
-        console.log(error)
+        console.error(error);
+        console.log(error);
     });
 
 });
