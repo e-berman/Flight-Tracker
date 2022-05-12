@@ -12,7 +12,7 @@ function HomePage() {
     const [arrivingDate, setArrivingDate] = useState('');
     const [flightType, setFlightType] = useState("One Way");
     const [hidden, setHidden] = useState(false);
-    let flights = null
+    let flights = null;
 
     // with React v6, navigate replaces useHistory
     const navigate = useNavigate();
@@ -30,8 +30,8 @@ function HomePage() {
         })
         .then(response => response.json())
         .then(payload_data => { 
-            console.log(payload_data)
-            flights = payload_data
+            console.log(payload_data);
+            flights = payload_data;
         });
 
         navigate('/results', {
@@ -43,7 +43,7 @@ function HomePage() {
 
     // handles the visibility of the Return Date text field based on if flight is One Way or Round Trip
     const changeHandler = (event) => {
-        setFlightType(event.target.value)
+        setFlightType(event.target.value);
         if (flightType === 'One Way') {
             setHidden(true);
         } else {
