@@ -6,12 +6,18 @@ Backend runs on port 3000.
 
 ### express
 
+```
 npm i express --save
+```
 
 ### mongoose
 
+```
 npm i mongoose --save
+```
 
 ### nodemon
 
+```
 npm i nodemon --save
+```
