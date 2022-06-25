@@ -43,7 +43,7 @@ app.get('/email', (req, res) => {
 });
 
 // passes form data to route via request body parameters.
-// Then calls amadeus Flight Offers Search API to retrieve
+// Then calls Amadeus Flight Offers Search API to retrieve
 // flight data pertaining to request body parameters.
 app.post('/flight', (req, res) => {
 
@@ -124,7 +124,7 @@ app.post('/email', (req, res) => {
 
 // adds the array of flights to the database
 app.post('/results', (req, res) => {
-    // console.log(req.body.passData)
+  
     flight.createFlightResults(req.body.passData)
         // If no error, 201 status provided and object sent as response in JSON format
         .then(results_obj => {
@@ -140,7 +140,6 @@ app.post('/results', (req, res) => {
 
 
 // listening on designated port
-
 app.listen(PORT, () => {
     console.log(`Server listening on port ${PORT}...`);
 });
