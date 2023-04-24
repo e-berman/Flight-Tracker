@@ -49,9 +49,7 @@ function HomePage() {
         } else {
             setHidden(false);
         }
-        
     }
-
 
     return (
 
@@ -60,7 +58,7 @@ function HomePage() {
                 <Container>
                     <Navbar.Brand href="/">
                         <MdFlight />
-                    Fire-Sale Flights
+                    Flight Finder
                     </Navbar.Brand>
                 </Container>
             </Navbar>
@@ -138,10 +136,6 @@ function HomePage() {
                                 <br />
                                 <br />
                                 Once you have all the info entered, click <strong>Generate</strong> to get your results.
-                                <br />
-                                <br />
-                                On the results page, you may also enter your email address to send the lowest price flight
-                                to your email address.
                                 </Popover.Body>
                             </Popover>
                         }
