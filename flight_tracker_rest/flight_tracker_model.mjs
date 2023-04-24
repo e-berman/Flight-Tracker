@@ -13,7 +13,7 @@ db.once('open', () => {
     console.log('Successfully connected to MongoDB using Mongoose.');
 });
 
-//Define schema for the flight object
+// define schema for the flight object
 const flightSchema = mongoose.Schema({
     departingAirport: { type: String, required: true },
     arrivingAirport: { type: String, required: true},
@@ -21,19 +21,13 @@ const flightSchema = mongoose.Schema({
     arrivingDate: { type: String, required: false}
 });
 
-const emailSchema = mongoose.Schema({
-    emailAddress: { type: String, required: true },
-});
-
+// define schema for flight results object
 const flightResultsSchema = mongoose.Schema({
-    results: { type: Array, required: true },
+    results: { type: Array },
 });
 
 // Compile the model from the schema
 const Flight = mongoose.model('Flight', flightSchema);
-
-// Compile the model from email schema
-const Email = mongoose.model('Email', emailSchema);
 
 // Compile the model from flightresults schema
 const FlightResults = mongoose.model('FlightResults', flightResultsSchema);
@@ -57,18 +51,6 @@ const FlightResults = mongoose.model('FlightResults', flightResultsSchema);
 }
 
 /**
- * Creates an Email object
- * 
- * @param {String} emailAddress
- * @returns Promise - resolved to JSON after .save
- */
-
-const createEmail = async (emailAddress) => {
-    const email = new Email({ emailAddress: emailAddress })
-    return email.save()
-}
-
-/**
  * Creates an FlightResults object
  * 
  * @param {Array} results
@@ -76,9 +58,9 @@ const createEmail = async (emailAddress) => {
  */
 
 const createFlightResults = async (results) => {
-    const flightResults = new FlightResults({ results: results});
+    const flightResults = new FlightResults({ results: results });
     return flightResults.save();
 }
 
 
-export { createFlight, createEmail, createFlightResults };
+export { createFlight, createFlightResults };
