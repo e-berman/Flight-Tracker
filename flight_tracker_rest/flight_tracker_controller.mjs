@@ -53,7 +53,6 @@ app.post('/flight', async (req, res) => {
             originLocationCode: req.body.departingAirport,
             destinationLocationCode: req.body.arrivingAirport,
             departureDate: req.body.departingDate,
-            departure:
             adults: '1',
             travelClass: 'ECONOMY',
             includedAirlineCodes: 'WN,AA,AS,DL,HA,UA,F9,NK,CO,B6,VX',

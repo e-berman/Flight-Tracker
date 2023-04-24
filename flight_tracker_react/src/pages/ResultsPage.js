@@ -53,11 +53,7 @@ function ResultsPage() {
         })
         .then(response => response.json())
         .then(payload_data => {
-<<<<<<< HEAD
-            //console.log(payload_data);
-=======
             console.log(payload_data);
->>>>>>> aa4024df597c928d5d64961887789a120e844fff
             data = payload_data;
         })
 
