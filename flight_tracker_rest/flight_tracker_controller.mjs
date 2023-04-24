@@ -15,12 +15,8 @@ app.use(express.json());
 // connect to Amadeus API with API key + secret
 // for details on Amadeus APIs: https://developers.amadeus.com/self-service.
 const amadeus = new Amadeus({
-<<<<<<< HEAD
     clientId: process.env.API_KEY,
     clientSecret: process.env.API_SECRET,
-=======
-    clientId: 'ENTER_CLIENT_ID',
-    clientSecret: 'ENTER_CLIENT_SECRET',
 });
 
 
@@ -46,7 +42,6 @@ app.get('/email', (req, res) => {
         }
         console.log('child process exited with code: ' + code);
     });
->>>>>>> aa4024df597c928d5d64961887789a120e844fff
 });
 
 // passes form data to route via request body parameters.
@@ -100,11 +95,7 @@ app.post('/carrier', async (req, res) => {
         airlineCodes: req.body.airCarrierCode,
     }).then(obj => {
         res.status(200).json(obj);
-<<<<<<< HEAD
-        //console.log(obj);
-=======
         console.log(obj);
->>>>>>> aa4024df597c928d5d64961887789a120e844fff
     }).catch(error => {
         console.error(error);
         console.log(error);
@@ -113,10 +104,6 @@ app.post('/carrier', async (req, res) => {
 
 // adds the array of flights to the database
 app.post('/results', (req, res) => {
-<<<<<<< HEAD
-=======
-  
->>>>>>> aa4024df597c928d5d64961887789a120e844fff
     flight.createFlightResults(req.body.passData)
         // If no error, 201 status provided and object sent as response in JSON format
         .then(results_obj => {
