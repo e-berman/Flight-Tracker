@@ -1,2 +1,4 @@
 .DS_Store
 .vscode/
+flight_tracker_react/.env
+flight_tracker_rest/.env
