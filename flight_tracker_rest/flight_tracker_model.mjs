@@ -21,6 +21,14 @@ const flightSchema = mongoose.Schema({
     arrivingDate: { type: String, required: false}
 });
 
+<<<<<<< HEAD
+=======
+// define schema for email object
+const emailSchema = mongoose.Schema({
+    emailAddress: { type: String, required: true },
+});
+
+>>>>>>> aa4024df597c928d5d64961887789a120e844fff
 // define schema for flight results object
 const flightResultsSchema = mongoose.Schema({
     results: { type: Array },
@@ -63,4 +71,8 @@ const createFlightResults = async (results) => {
 }
 
 
+<<<<<<< HEAD
 export { createFlight, createFlightResults };
+=======
+export { createFlight, createEmail, createFlightResults };
+>>>>>>> aa4024df597c928d5d64961887789a120e844fff

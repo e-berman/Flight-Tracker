@@ -15,8 +15,38 @@ app.use(express.json());
 // connect to Amadeus API with API key + secret
 // for details on Amadeus APIs: https://developers.amadeus.com/self-service.
 const amadeus = new Amadeus({
+<<<<<<< HEAD
     clientId: process.env.API_KEY,
     clientSecret: process.env.API_SECRET,
+=======
+    clientId: 'ENTER_CLIENT_ID',
+    clientSecret: 'ENTER_CLIENT_SECRET',
+});
+
+
+// route to run python microservice launcher
+app.get('/email', (req, res) => {
+    const pyPath = '/Users/eberman/ankylosaurus/school/CS_361/Flight-Tracker/launcher.py'
+    const process = spawn('python', [pyPath])
+
+    // log data as string
+    process.stdout.on('data', (stdout) => {
+        console.log(stdout.toString());
+    });
+
+    // log error as string
+    process.stderr.on('data', (stderr) => {
+        console.log(stderr.toString());
+    });
+
+    // close the child process and provide exit code
+    process.on('close', (code) => {
+        if (code === 0) {
+            res.sendStatus(200);
+        }
+        console.log('child process exited with code: ' + code);
+    });
+>>>>>>> aa4024df597c928d5d64961887789a120e844fff
 });
 
 // passes form data to route via request body parameters.
@@ -70,7 +100,11 @@ app.post('/carrier', async (req, res) => {
         airlineCodes: req.body.airCarrierCode,
     }).then(obj => {
         res.status(200).json(obj);
+<<<<<<< HEAD
         //console.log(obj);
+=======
+        console.log(obj);
+>>>>>>> aa4024df597c928d5d64961887789a120e844fff
     }).catch(error => {
         console.error(error);
         console.log(error);
@@ -79,6 +113,10 @@ app.post('/carrier', async (req, res) => {
 
 // adds the array of flights to the database
 app.post('/results', (req, res) => {
+<<<<<<< HEAD
+=======
+  
+>>>>>>> aa4024df597c928d5d64961887789a120e844fff
     flight.createFlightResults(req.body.passData)
         // If no error, 201 status provided and object sent as response in JSON format
         .then(results_obj => {
