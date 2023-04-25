@@ -12,7 +12,7 @@ function ResultsPage() {
 
     // initialize state variables
     const [displayData, setDisplayData] = useState([]);
-    //const [passData, setPassData] = useState(null);
+    const [passData, setPassData] = useState(null);
     const [loading, setLoading] = useState(true);
 
     let flightParams = location.state.flights['request']['params'];
@@ -23,23 +23,22 @@ function ResultsPage() {
     let airCarrierCode = '';
 
     // fetches results route to store flight data to database
-    // const createFlightResults = async () => {
-    //     const newFlightResults = {passData};
-    //     const response = await fetch('/results', {
-    //         method: 'POST', 
-    //         body: JSON.stringify(newFlightResults),
-    //         headers: {
-    //             'Content-Type': 'application/json',
-    //         },
-    //     });
+    const createFlightResults = async () => {
+        const newFlightResults = {passData};
+        const response = await fetch('/results', {
+            method: 'POST', 
+            body: JSON.stringify(newFlightResults),
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
 
-    //     // error handling with response status check
-    //     if (response.status !== 201) {
-    //         alert(`Failed to add the flights. Status code = ${response.status}`);
-    //     }
-    // }
+        // error handling with response status check
+        if (response.status !== 201) {
+            alert(`Failed to add the flights. Status code = ${response.status}`);
+        }
+    }
 
-    
     // calls the carrier route to call Amadeus API to translate IATA code to air carrier business name
     const getAirCarrier = async(carrier_code) => {
         let data = null
@@ -114,7 +113,7 @@ function ResultsPage() {
                 setDisplayData(data);
             }
             setLoading(false);
-            //createFlightResults();
+            createFlightResults();
         })();
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
