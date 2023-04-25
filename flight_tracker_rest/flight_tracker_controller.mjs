@@ -1,4 +1,4 @@
-import * as flight from './flight_tracker_model.mjs';
+//import * as flight from './flight_tracker_model.mjs';
 import express from 'express';
 import Amadeus from 'amadeus';
 import dotenv from 'dotenv'
@@ -17,31 +17,6 @@ app.use(express.json());
 const amadeus = new Amadeus({
     clientId: process.env.API_KEY,
     clientSecret: process.env.API_SECRET,
-});
-
-
-// route to run python microservice launcher
-app.get('/email', (req, res) => {
-    const pyPath = '/Users/eberman/ankylosaurus/school/CS_361/Flight-Tracker/launcher.py'
-    const process = spawn('python', [pyPath])
-
-    // log data as string
-    process.stdout.on('data', (stdout) => {
-        console.log(stdout.toString());
-    });
-
-    // log error as string
-    process.stderr.on('data', (stderr) => {
-        console.log(stderr.toString());
-    });
-
-    // close the child process and provide exit code
-    process.on('close', (code) => {
-        if (code === 0) {
-            res.sendStatus(200);
-        }
-        console.log('child process exited with code: ' + code);
-    });
 });
 
 // passes form data to route via request body parameters.
@@ -102,19 +77,19 @@ app.post('/carrier', async (req, res) => {
 });
 
 // adds the array of flights to the database
-app.post('/results', (req, res) => {
-    flight.createFlightResults(req.body.passData)
-        // If no error, 201 status provided and object sent as response in JSON format
-        .then(results_obj => {
-            res.setHeader('Content-Type', 'application/json');
-            res.status(201).json(results_obj);
-        })
-        // In case of failed Promise, raise 404 status code
-        .catch(error => {
-            console.error(error);
-            res.status(400).json({ error: "Request Failed" });
-        });
-});
+// app.post('/results', (req, res) => {
+//     flight.createFlightResults(req.body.passData)
+//         // If no error, 201 status provided and object sent as response in JSON format
+//         .then(results_obj => {
+//             res.setHeader('Content-Type', 'application/json');
+//             res.status(201).json(results_obj);
+//         })
+//         // In case of failed Promise, raise 404 status code
+//         .catch(error => {
+//             console.error(error);
+//             res.status(400).json({ error: "Request Failed" });
+//         });
+// });
 
 // listening on designated port
 app.listen(PORT, () => {
