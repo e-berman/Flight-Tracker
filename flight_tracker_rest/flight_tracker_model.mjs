@@ -1,8 +1,11 @@
 import mongoose from 'mongoose';
+import dotenv from 'dotenv'
+
+dotenv.config()
 
 // Connect to the flight collection in the MongoDB server. Runs on port 27017.
 mongoose.connect(
-    'mongodb://localhost:27017/flights',
+    process.env.MONGO_DB_URI,
     { useNewUrlParser: true }
 )
 
