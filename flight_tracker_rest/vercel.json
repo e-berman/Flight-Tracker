@@ -2,14 +2,14 @@
     "version": 2,
     "builds": [
         {
-            "src": "*.js",
+            "src": "./flight_tracker_controller.mjs",
             "use": "@vercel/node"
         }
     ],
     "routes": [
         {
             "src": "/(.*)",
-            "dest": "/"
+            "dest": "flight_tracker_controller.mjs",
         }
     ]
 }
